@@ -1,10 +1,5 @@
-#!/usr/bin/env python3
-# gui.py
-
 import os
-# Suppress Wayland session warning by unsetting XDG_SESSION_TYPE
 os.environ.pop("XDG_SESSION_TYPE", None)
-# Force Qt to use XCB backend
 os.environ["QT_QPA_PLATFORM"] = "xcb"
 
 import sys
@@ -18,7 +13,6 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import QThread, pyqtSignal, Qt
 
-# Список шагов и скриптов
 STEPS = [
     ("File Splitting", "csv_split.py"),
     ("Retrieve CAS Information", "proj_1.py"),
@@ -178,7 +172,6 @@ class MainWindow(QWidget):
         main_layout = QHBoxLayout(self)
         main_layout.addWidget(splitter)
 
-        # Инициализация настроек
         self.load_config()
 
     def update_accuracy_label(self, v):
@@ -208,10 +201,8 @@ class MainWindow(QWidget):
             return
         acc = self.accuracy_slider.value() / 100.0
         workers = self.workers_spin.value()
-        # Запоминаем время старта
         self.start_time = datetime.now()
         self.main_output.append(f"⏱ Start: {self.start_time.strftime('%H:%M:%S')}")
-        # Очищаем вывод скриптов и запускаем
         self.script_output.clear()
         self.runner = ScriptRunner(tasks, getattr(self, 'file_path', None), acc, workers)
         self.runner.output_signal.connect(self.route_output)
